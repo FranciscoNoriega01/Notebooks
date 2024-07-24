@@ -5,7 +5,7 @@
     "tags" : null,
     "version" : "6",
     "layout" : "zeppelin",
-    "type" : "Default",
+    "type" : "low",
     "readOnly" : false,
     "snapshot" : false,
     "template" : "dsrgmn3y",
@@ -19,7 +19,7 @@
         "title" : null,
         "hasTitle" : false,
         "message" : [
-          "%sql select 23456 from dual"
+          "%sql select 7777 from dual"
         ],
         "selectedVisualization" : "table",
         "visualizationConfig" : null,
