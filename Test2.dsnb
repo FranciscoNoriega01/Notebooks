@@ -3,11 +3,12 @@
     "name" : "testio",
     "description" : "test",
     "tags" : null,
-    "version" : "6",
+    "version" : "7",
     "layout" : "zeppelin",
     "type" : "low",
-    "readOnly" : false,
     "snapshot" : false,
+    "isEditable" : true,
+    "isRunnable" : true,
     "template" : "dsrgmn3y",
     "templateConfig" : "{\"visualization\":{\"filters\":[{\"_id\":1583324064459,\"type\":\"styling\",\"enabled\":true,\"conditions\":{\"operator\":\"and\",\"conditions\":[{\"property\":\"hiddenConnection\",\"operator\":\"*\",\"value\":\"\"}]},\"component\":\"edge\",\"target\":\"edge\",\"properties\":{\"colors\":[\"rgba(0, 0, 0, 0.1)\"],\"style\":[\"dashed\"],\"legendTitle\":[\"Hidden Connection\"]}},{\"_id\":1590499315755,\"type\":\"aggregation\",\"enabled\":true,\"conditions\":{\"operator\":\"and\",\"conditions\":[]},\"component\":\"vertex\",\"target\":\"vertex\",\"properties\":{},\"aggregation\":[{\"source\":\"\",\"type\":\"average\"}]}],\"version\":4}}",
     "paragraphs" : [
@@ -19,7 +20,7 @@
         "title" : null,
         "hasTitle" : false,
         "message" : [
-          "%sql select 88888 from dual"
+          "%sql select 8886666 from dual"
         ],
         "selectedVisualization" : "table",
         "visualizationConfig" : null,
