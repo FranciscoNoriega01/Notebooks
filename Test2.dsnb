@@ -1,6 +1,6 @@
 [
   {
-    "name" : "testio_1",
+    "name" : "testio",
     "description" : "test",
     "tags" : null,
     "version" : "7",
@@ -20,7 +20,7 @@
         "title" : null,
         "hasTitle" : false,
         "message" : [
-          "%sql select 4444444 from dual"
+          "%sql select 77777 from dual"
         ],
         "selectedVisualization" : "table",
         "visualizationConfig" : null,
