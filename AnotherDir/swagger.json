@@ -1,0 +1,3626 @@
+{
+  "swagger" : "2.0",
+  "info" : {
+    "description" : "Documentation for Oracle Machine Learning",
+    "version" : "1.0-SNAPSHOT",
+    "title" : "OML Rest API",
+    "termsOfService" : "http://www.github.com/kongchen/swagger-maven-plugin",
+    "contact" : {
+      "name" : "Mark Kelly",
+      "email" : "mark.kelly@oracle.com"
+    }
+  },
+  "host" : "localhost",
+  "basePath" : "/api",
+  "tags" : [ {
+    "name" : "ACTIVITIES"
+  }, {
+    "name" : "COMPUTE RESOURCES"
+  }, {
+    "name" : "CONNECTION GROUPS"
+  }, {
+    "name" : "Identity"
+  }, {
+    "name" : "Interactive Sessions"
+  }, {
+    "name" : "Internationalization"
+  }, {
+    "name" : "Job"
+  }, {
+    "name" : "Notebooks"
+  }, {
+    "name" : "OML"
+  }, {
+    "name" : "Project"
+  }, {
+    "name" : "Properties"
+  }, {
+    "name" : "Tags"
+  }, {
+    "name" : "Templates"
+  }, {
+    "name" : "Workspaces"
+  }, {
+    "name" : "Zeppelin"
+  } ],
+  "schemes" : [ "http", "https" ],
+  "paths" : {
+    "/activities/latest" : {
+      "get" : {
+        "tags" : [ "ACTIVITIES" ],
+        "summary" : "GET Latest Activities",
+        "description" : "",
+        "operationId" : "recentActivities",
+        "produces" : [ "application/json" ],
+        "responses" : {
+          "200" : {
+            "description" : "Latest activities on user/shared notebooks and jobs",
+            "schema" : {
+              "type" : "array",
+              "items" : {
+                "$ref" : "#/definitions/Activity"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/activities/recent_notebooks" : {
+      "get" : {
+        "tags" : [ "ACTIVITIES" ],
+        "summary" : "GET Recently Used Notebooks",
+        "description" : "",
+        "operationId" : "recentNotebooks",
+        "produces" : [ "application/json" ],
+        "responses" : {
+          "200" : {
+            "description" : "Returns a maximum of 15 recently used notebooks",
+            "schema" : {
+              "type" : "array",
+              "items" : {
+                "$ref" : "#/definitions/RecentNotebook"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/compute_resources" : {
+      "get" : {
+        "tags" : [ "COMPUTE RESOURCES" ],
+        "summary" : "GET Compute Resources",
+        "description" : "Get all compute resources (resource data and dependent resources are not included).",
+        "operationId" : "list",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "resourceType",
+          "in" : "query",
+          "required" : false,
+          "type" : "string",
+          "x-example" : "ORACLE",
+          "enum" : [ "ORACLE" ]
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Compute Resources",
+            "schema" : {
+              "type" : "array",
+              "items" : {
+                "$ref" : "#/definitions/ComputeResource"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/compute_resources/{resourceId}" : {
+      "get" : {
+        "tags" : [ "COMPUTE RESOURCES" ],
+        "summary" : "GET Compute Resource",
+        "description" : "Get specified compute resource (resource data and dependent resources are not included).",
+        "operationId" : "get",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "resourceId",
+          "in" : "path",
+          "description" : "Compute Resource ID",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int64",
+          "x-example" : 12
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Compute Resource",
+            "schema" : {
+              "$ref" : "#/definitions/ComputeResource"
+            }
+          }
+        }
+      }
+    },
+    "/compute_resources/{resourceId}/data" : {
+      "get" : {
+        "tags" : [ "COMPUTE RESOURCES" ],
+        "summary" : "GET Compute Resource Data",
+        "description" : "Get specified compute resource with resource data and dependent resources.",
+        "operationId" : "getData",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "resourceType",
+          "in" : "query",
+          "required" : false,
+          "type" : "string",
+          "x-example" : "ORACLE",
+          "enum" : [ "ORACLE" ]
+        }, {
+          "name" : "resourceId",
+          "in" : "path",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int64",
+          "x-example" : 12
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Compute Resource with data",
+            "schema" : {
+              "$ref" : "#/definitions/ComputeResource"
+            }
+          }
+        }
+      }
+    },
+    "/compute_resources/{resourceId}/permissions" : {
+      "get" : {
+        "tags" : [ "COMPUTE RESOURCES" ],
+        "summary" : "GET Compute Resource Permissions",
+        "description" : "Get permissions for specified compute resource.",
+        "operationId" : "listPermissions",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "resourceId",
+          "in" : "path",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int64",
+          "x-example" : 12
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Compute Resource permissions",
+            "schema" : {
+              "$ref" : "#/definitions/ComputeResource"
+            }
+          }
+        }
+      }
+    },
+    "/connection_groups" : {
+      "get" : {
+        "tags" : [ "CONNECTION GROUPS" ],
+        "summary" : "Lists connection groups.",
+        "description" : "Get a listing of existing connection groups for the current user",
+        "operationId" : "listConnectionGroups",
+        "produces" : [ "application/json" ],
+        "responses" : {
+          "200" : {
+            "description" : "List of connection groups",
+            "schema" : {
+              "type" : "array",
+              "items" : {
+                "$ref" : "#/definitions/ConnectionGroup"
+              }
+            }
+          },
+          "401" : {
+            "description" : "When the user doesn't have privileges to perform the action"
+          }
+        }
+      }
+    },
+    "/connection_groups/global" : {
+      "get" : {
+        "tags" : [ "CONNECTION GROUPS" ],
+        "summary" : "Lists global connection group.",
+        "description" : "Get the global connection group",
+        "operationId" : "getGlobalConnectionGroup",
+        "produces" : [ "application/json" ],
+        "responses" : {
+          "200" : {
+            "description" : "Object containing the global connection group",
+            "schema" : {
+              "$ref" : "#/definitions/ConnectionGroup"
+            }
+          },
+          "401" : {
+            "description" : "When the user doesn't have privileges to perform the action"
+          }
+        }
+      },
+      "put" : {
+        "tags" : [ "CONNECTION GROUPS" ],
+        "summary" : "Update global connection group",
+        "description" : "Updates the global connection group with the passed information",
+        "operationId" : "updateGlobalConnectionGroup",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "body",
+          "description" : "Information to update the global connection groups",
+          "required" : true,
+          "schema" : {
+            "$ref" : "#/definitions/ConnectionGroup"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Updated global connection group",
+            "schema" : {
+              "$ref" : "#/definitions/ConnectionGroup"
+            }
+          },
+          "401" : {
+            "description" : "When the user doesn't have privileges to perform the action"
+          }
+        }
+      }
+    },
+    "/connection_groups/global/connections" : {
+      "get" : {
+        "tags" : [ "CONNECTION GROUPS" ],
+        "summary" : "Get Global connection group connections",
+        "description" : "Retrieves the listing of connections for the global connection group.",
+        "operationId" : "getConnectionGroupConnections",
+        "produces" : [ "application/json" ],
+        "responses" : {
+          "200" : {
+            "description" : "List of connections",
+            "schema" : {
+              "type" : "array",
+              "items" : {
+                "$ref" : "#/definitions/Connection"
+              }
+            }
+          },
+          "401" : {
+            "description" : "When the user doesn't have privileges to perform the action"
+          }
+        }
+      }
+    },
+    "/connection_groups/global/connections/reset" : {
+      "post" : {
+        "tags" : [ "CONNECTION GROUPS" ],
+        "summary" : "Restart connections",
+        "description" : "Restart a list of zeppelin servers",
+        "operationId" : "restartConnections",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "body",
+          "description" : "List of zeppelin connections to restart",
+          "required" : true,
+          "schema" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string"
+            }
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "String containing the status of the operation in JSON format"
+          },
+          "401" : {
+            "description" : "When the user doesn't have privileges to perform the action"
+          }
+        }
+      }
+    },
+    "/connection_groups/global/connections/{connectionId}" : {
+      "get" : {
+        "tags" : [ "CONNECTION GROUPS" ],
+        "summary" : "Get connection",
+        "description" : "Get the connection data identified by the passed in Id",
+        "operationId" : "getConnection",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "connectionId",
+          "in" : "path",
+          "description" : "Connection Id",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int64"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Connection object with the connection information",
+            "schema" : {
+              "$ref" : "#/definitions/Connection"
+            }
+          },
+          "401" : {
+            "description" : "When the user doesn't have privileges to perform the action"
+          }
+        }
+      },
+      "put" : {
+        "tags" : [ "CONNECTION GROUPS" ],
+        "summary" : "Update connection",
+        "description" : "Updates the given connection with the passed information",
+        "operationId" : "updateConnectionEntry",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "connectionId",
+          "in" : "path",
+          "description" : "Connection Id",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int64"
+        }, {
+          "in" : "body",
+          "name" : "body",
+          "description" : "Connection containing the information to update",
+          "required" : true,
+          "schema" : {
+            "$ref" : "#/definitions/Connection"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Connection with the updated information",
+            "schema" : {
+              "$ref" : "#/definitions/Connection"
+            }
+          },
+          "401" : {
+            "description" : "When the user doesn't have privileges to perform the action"
+          }
+        }
+      }
+    },
+    "/connection_groups/global/connections/{connectionId}/data" : {
+      "put" : {
+        "tags" : [ "CONNECTION GROUPS" ],
+        "summary" : "Update global connection",
+        "description" : "Updates the given global connection with the passed information",
+        "operationId" : "updateConnection",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "connectionId",
+          "in" : "path",
+          "description" : "Connection Id",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int64"
+        }, {
+          "in" : "body",
+          "name" : "body",
+          "description" : "Connection containing the information to update",
+          "required" : true,
+          "schema" : {
+            "$ref" : "#/definitions/Connection"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Zeppelin status after updating the global connection"
+          },
+          "401" : {
+            "description" : "When the user doesn't have privileges to perform the action"
+          }
+        }
+      }
+    },
+    "/connection_groups/global/data" : {
+      "get" : {
+        "tags" : [ "CONNECTION GROUPS" ],
+        "summary" : "Get Global Connection group data",
+        "description" : "Retrieves the Zeppelin settings of the global connection group.",
+        "operationId" : "getZeppelinJson",
+        "produces" : [ "application/json" ],
+        "responses" : {
+          "200" : {
+            "description" : "String containing the zeppelin settings for the global connection group"
+          },
+          "401" : {
+            "description" : "When the user doesn't have privileges to perform the action"
+          }
+        }
+      }
+    },
+    "/healthcheck" : {
+      "post" : {
+        "tags" : [ "OML" ],
+        "summary" : "Health Check",
+        "description" : "To check if OML is up, this endpoint is not secured.",
+        "operationId" : "healthcheck",
+        "responses" : {
+          "200" : {
+            "description" : "Health Check"
+          }
+        }
+      }
+    },
+    "/i18n/time_zones" : {
+      "get" : {
+        "tags" : [ "Internationalization" ],
+        "summary" : "GET Time Zones",
+        "description" : "Get all the available Timezones translated on the User Language.",
+        "operationId" : "getTimeZones",
+        "produces" : [ "application/json" ],
+        "responses" : {
+          "200" : {
+            "description" : "Time Zones list",
+            "schema" : {
+              "type" : "array",
+              "items" : {
+                "$ref" : "#/definitions/TimeZone"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/identity/auth" : {
+      "get" : {
+        "tags" : [ "Identity" ],
+        "summary" : "Return authenticated user info",
+        "description" : "Get the authenticated user information.If is the first time that the user logins, the api uses the default workspace and default project name to insert a new Workspace and Project.\nThe format of the Workspace is %s Workspace\nIt will be replaced with *FirstName | LastName | UserName * in that order, the first that is not null\nThe Same rules apply to Project",
+        "operationId" : "getAuthenticateUserInfo",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "workspace",
+          "in" : "query",
+          "description" : "Default workspace for the user",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "project",
+          "in" : "query",
+          "description" : "Default project for the user",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "User object with the user information",
+            "schema" : {
+              "$ref" : "#/definitions/User"
+            }
+          },
+          "401" : {
+            "description" : "When the user doesn't have privileges to perform the action"
+          }
+        }
+      }
+    },
+    "/identity/authCode" : {
+      "post" : {
+        "tags" : [ "Identity" ],
+        "summary" : "Return JWT for authenticated user",
+        "description" : "Get the JWT Token from the IDM and return as cookie to the Client",
+        "operationId" : "getJWTForAuthenticatedUser",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "tenant",
+          "in" : "query",
+          "description" : "Tenant id",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "database",
+          "in" : "query",
+          "description" : "Database id",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "code",
+          "in" : "query",
+          "description" : "Authorization code",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "state",
+          "in" : "query",
+          "description" : "State",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Redirect with the stored JWT token",
+            "schema" : {
+              "$ref" : "#/definitions/Redirect"
+            }
+          },
+          "401" : {
+            "description" : "When the user doesn't have privileges to perform the action"
+          }
+        }
+      }
+    },
+    "/identity/logout" : {
+      "get" : {
+        "tags" : [ "Identity" ],
+        "summary" : "Logout user",
+        "description" : "Log user out (called by Client)",
+        "operationId" : "userLogout",
+        "produces" : [ "application/json" ],
+        "responses" : {
+          "200" : {
+            "description" : "Redirect with the login page url.",
+            "schema" : {
+              "$ref" : "#/definitions/Redirect"
+            }
+          }
+        }
+      }
+    },
+    "/identity/profile" : {
+      "get" : {
+        "tags" : [ "Identity" ],
+        "summary" : "Get User profile",
+        "description" : "Returns the current user profile",
+        "operationId" : "getProfile",
+        "produces" : [ "application/json" ],
+        "responses" : {
+          "200" : {
+            "description" : "Object with the user profile",
+            "schema" : {
+              "$ref" : "#/definitions/Profile"
+            }
+          },
+          "401" : {
+            "description" : "When the user doesn't have privileges to perform the action"
+          }
+        }
+      },
+      "put" : {
+        "tags" : [ "Identity" ],
+        "summary" : "Update user profile",
+        "description" : "Updates the user profile with preferences",
+        "operationId" : "setProfile",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "body",
+          "description" : "Preferences to update in the user profile",
+          "required" : true,
+          "schema" : {
+            "$ref" : "#/definitions/Preference"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "User profile updated",
+            "schema" : {
+              "$ref" : "#/definitions/Profile"
+            }
+          },
+          "401" : {
+            "description" : "When the user doesn't have privileges to perform the action"
+          }
+        }
+      }
+    },
+    "/identity/role" : {
+      "get" : {
+        "tags" : [ "Identity" ],
+        "summary" : "Get User role",
+        "description" : "Returns the current user role",
+        "operationId" : "getUserRole",
+        "produces" : [ "application/json" ],
+        "responses" : {
+          "200" : {
+            "description" : "String with the user role"
+          },
+          "401" : {
+            "description" : "When the user doesn't have privileges to perform the action"
+          }
+        }
+      }
+    },
+    "/identity/update" : {
+      "put" : {
+        "tags" : [ "Identity" ],
+        "summary" : "Update user password",
+        "description" : "Updates the user information with the new password",
+        "operationId" : "updatePassword",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "body",
+          "description" : "Request containing the user old and new password",
+          "required" : true,
+          "schema" : {
+            "$ref" : "#/definitions/UpdatePasswordRequest"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Ok (200) if the operation is successful"
+          },
+          "401" : {
+            "description" : "When the user doesn't have privileges to perform the action"
+          }
+        }
+      }
+    },
+    "/identity/users" : {
+      "get" : {
+        "tags" : [ "Identity" ],
+        "summary" : "Get Users.",
+        "description" : "Get a listing of existing users",
+        "operationId" : "getUsers",
+        "produces" : [ "application/json" ],
+        "responses" : {
+          "200" : {
+            "description" : "List of users",
+            "schema" : {
+              "type" : "array",
+              "items" : {
+                "$ref" : "#/definitions/User"
+              }
+            }
+          },
+          "401" : {
+            "description" : "When the user doesn't have privileges to perform the action"
+          }
+        }
+      }
+    },
+    "/identity/{userIds}" : {
+      "delete" : {
+        "tags" : [ "Identity" ],
+        "summary" : "Delete Identity",
+        "description" : "Deletes a collection of one or more identity.",
+        "operationId" : "deleteIdentity",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "userIds",
+          "in" : "path",
+          "description" : "List of Identity ids",
+          "required" : true,
+          "type" : "string",
+          "x-example" : "2143,32,.., 948"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "List of successfuly deleted Identity"
+          }
+        }
+      }
+    },
+    "/interactive_sessions" : {
+      "get" : {
+        "tags" : [ "Interactive Sessions" ],
+        "summary" : "Get Interactive Sessions",
+        "description" : "Get the Notebooks still loaded in Zeppelin for the current user (owner and shared)",
+        "operationId" : "listInteractiveSessions",
+        "produces" : [ "application/json" ],
+        "responses" : {
+          "200" : {
+            "description" : "List of Interactive Sessions",
+            "schema" : {
+              "type" : "array",
+              "items" : {
+                "$ref" : "#/definitions/InteractiveSession"
+              }
+            }
+          },
+          "401" : {
+            "description" : "When the user doesn't have privileges to perform the action"
+          }
+        }
+      }
+    },
+    "/interactive_sessions/stop" : {
+      "post" : {
+        "tags" : [ "Interactive Sessions" ],
+        "summary" : "Stop a running notebook",
+        "description" : "Stop the running notebooks specified by the ids",
+        "operationId" : "stopInteractiveSessions",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "body",
+          "description" : "List of notebook ids to stop",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Boolean indicating whether the operation was successful or not"
+          },
+          "401" : {
+            "description" : "When the user doesn't have privileges to perform the action"
+          }
+        }
+      }
+    },
+    "/interactive_sessions/unload" : {
+      "post" : {
+        "tags" : [ "Interactive Sessions" ],
+        "summary" : "Unload interactive sessions",
+        "description" : "Unload the Notebook from Zeppelin Memory",
+        "operationId" : "unloadInteractiveSessions",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "body",
+          "description" : "List of notebook ids to unload",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Boolean indicating whether the operation was successful"
+          },
+          "401" : {
+            "description" : "When the user doesn't have privileges to perform the action"
+          }
+        }
+      }
+    },
+    "/jobs" : {
+      "get" : {
+        "tags" : [ "Job" ],
+        "summary" : "Lists Jobs.",
+        "description" : "Get a listing of existing Jobs",
+        "operationId" : "getJobList",
+        "produces" : [ "application/json" ],
+        "responses" : {
+          "200" : {
+            "description" : "List of Jobs",
+            "schema" : {
+              "type" : "array",
+              "items" : {
+                "$ref" : "#/definitions/Job"
+              }
+            }
+          },
+          "401" : {
+            "description" : "When the user doesn't have privileges to perform the action"
+          }
+        }
+      },
+      "post" : {
+        "tags" : [ "Job" ],
+        "summary" : "Create Job",
+        "description" : "Creates a new user Job.",
+        "operationId" : "createJob",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "body",
+          "description" : "Object with the information to create the new Job",
+          "required" : true,
+          "schema" : {
+            "$ref" : "#/definitions/Job"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Object with the newly created Job information",
+            "schema" : {
+              "$ref" : "#/definitions/Job"
+            }
+          },
+          "401" : {
+            "description" : "When the user doesn't have privileges to perform the action"
+          }
+        }
+      },
+      "put" : {
+        "tags" : [ "Job" ],
+        "summary" : "Update Job",
+        "description" : "Updates an existing Job with the new properties.",
+        "operationId" : "updateJob",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "body",
+          "description" : "Object with the data to persist",
+          "required" : true,
+          "schema" : {
+            "$ref" : "#/definitions/Job"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Job with updated information",
+            "schema" : {
+              "$ref" : "#/definitions/Job"
+            }
+          },
+          "401" : {
+            "description" : "When the user doesn't have privileges to perform the action"
+          }
+        }
+      }
+    },
+    "/jobs/finish" : {
+      "post" : {
+        "tags" : [ "Job" ],
+        "summary" : "Finish Job",
+        "description" : "Called by Zeppelin instance (docker container) upon notebook run completion.",
+        "operationId" : "finishJob",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "notebookId",
+          "in" : "query",
+          "description" : "Notebook id that has been run.",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int64"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Ok (200) when the operation is successful"
+          },
+          "401" : {
+            "description" : "When the user doesn't have privileges to perform the action"
+          }
+        }
+      }
+    },
+    "/jobs/logs/{ids}" : {
+      "delete" : {
+        "tags" : [ "Job" ],
+        "summary" : "Delete Job logs",
+        "description" : "Deletes a collection of one or more Job logs.",
+        "operationId" : "deleteJobLog",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "ids",
+          "in" : "path",
+          "description" : "List of Job logs ids",
+          "required" : true,
+          "type" : "string",
+          "format" : "JobLogId,JobLog2,.. JobLogN",
+          "x-example" : "2143,32,.., 948"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "HTTP Code 200"
+          },
+          "401" : {
+            "description" : "When the user doesn't have privileges to perform the action"
+          }
+        }
+      }
+    },
+    "/jobs/stop" : {
+      "put" : {
+        "tags" : [ "Job" ],
+        "summary" : "Stop Job",
+        "description" : "Called by client to stop running jobs.",
+        "operationId" : "stopJob",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "body",
+          "description" : "List of version ids to stop",
+          "required" : true,
+          "schema" : {
+            "type" : "array",
+            "items" : {
+              "type" : "integer",
+              "format" : "int64"
+            }
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "List of Jobs stopped"
+          },
+          "401" : {
+            "description" : "When the user doesn't have privileges to perform the action"
+          }
+        }
+      }
+    },
+    "/jobs/{jobId}" : {
+      "get" : {
+        "tags" : [ "Job" ],
+        "summary" : "Get Job Data.",
+        "description" : "Retrieves the Job data for the provided job id.",
+        "operationId" : "getJobData",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "jobId",
+          "in" : "path",
+          "description" : "Job id",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int64"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Job object with the job information",
+            "schema" : {
+              "$ref" : "#/definitions/Job"
+            }
+          },
+          "401" : {
+            "description" : "When the user doesn't have privileges to perform the action"
+          }
+        }
+      }
+    },
+    "/jobs/{jobId}/clone" : {
+      "post" : {
+        "tags" : [ "Job" ],
+        "summary" : "Clone a Job",
+        "description" : "Clone a Job with all the settings it has.",
+        "operationId" : "cloneJob",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "jobId",
+          "in" : "path",
+          "description" : "Id of the job to clone",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int64"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Newly created Job",
+            "schema" : {
+              "$ref" : "#/definitions/Job"
+            }
+          },
+          "401" : {
+            "description" : "When the user doesn't have privileges to perform the action"
+          }
+        }
+      }
+    },
+    "/jobs/{jobId}/logs" : {
+      "get" : {
+        "tags" : [ "Job" ],
+        "summary" : "Lists Job logs.",
+        "description" : "Get a listing of existing Job logs for a given Job Id",
+        "operationId" : "listJobLog",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "jobId",
+          "in" : "path",
+          "description" : "Job id to get the joblogs from.",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int64"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Collection of Job logs",
+            "schema" : {
+              "$ref" : "#/definitions/JobCollection"
+            }
+          },
+          "401" : {
+            "description" : "When the user doesn't have privileges to perform the action"
+          }
+        }
+      }
+    },
+    "/jobs/{jobId}/run" : {
+      "post" : {
+        "tags" : [ "Job" ],
+        "summary" : "Run Job",
+        "description" : "Loads a Zeppelin instance (docker container), if necessary, to run a given notebook job.\n. Called by the DBMS Scheduler",
+        "operationId" : "runJob",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "jobId",
+          "in" : "path",
+          "description" : "Job id to run",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int64"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Ok (200) when the operation is successful"
+          },
+          "401" : {
+            "description" : "When the user doesn't have privileges to perform the action"
+          }
+        }
+      }
+    },
+    "/notebooks" : {
+      "get" : {
+        "tags" : [ "Notebooks" ],
+        "summary" : "Lists notebooks.",
+        "description" : "Get a listing of existing notebooks",
+        "operationId" : "listNotebook",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "project",
+          "in" : "query",
+          "description" : "Project to get the listing of notebooks",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int64"
+        }, {
+          "name" : "connectionGroupId",
+          "in" : "query",
+          "description" : "Connection group id to get the listing of notebooks",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int64"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "List of notebooks",
+            "schema" : {
+              "type" : "array",
+              "items" : {
+                "$ref" : "#/definitions/Notebook"
+              }
+            }
+          },
+          "401" : {
+            "description" : "When the user doesn't have privileges to perform the action"
+          }
+        }
+      },
+      "post" : {
+        "tags" : [ "Notebooks" ],
+        "summary" : "Create a new notebook",
+        "description" : "Creates a new notebook with the specified information.",
+        "operationId" : "createNotebook",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "body",
+          "description" : "Object with the new notebook information",
+          "required" : true,
+          "schema" : {
+            "$ref" : "#/definitions/Notebook"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "The body field of the returned JSON contains the new notebook id",
+            "schema" : {
+              "$ref" : "#/definitions/Notebook"
+            }
+          },
+          "401" : {
+            "description" : "When the user doesn't have privileges to perform the action"
+          }
+        }
+      },
+      "put" : {
+        "tags" : [ "Notebooks" ],
+        "summary" : "Update notebook",
+        "description" : "Updates an existing notebook with the new properties.",
+        "operationId" : "updateNotebook",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "body",
+          "description" : "Id of the notebook to update",
+          "required" : true,
+          "schema" : {
+            "$ref" : "#/definitions/Notebook"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Notebook with updated information",
+            "schema" : {
+              "$ref" : "#/definitions/Notebook"
+            }
+          },
+          "401" : {
+            "description" : "When the user doesn't have privileges to perform the action"
+          }
+        }
+      }
+    },
+    "/notebooks/limit_status" : {
+      "get" : {
+        "tags" : [ "Notebooks" ],
+        "summary" : "Get notebook count",
+        "description" : " Retrieves the notebook count.",
+        "operationId" : "getNotebookCount",
+        "produces" : [ "application/json" ],
+        "responses" : {
+          "200" : {
+            "description" : "Object containing the notebook count",
+            "schema" : {
+              "$ref" : "#/definitions/NotebookCountLimit"
+            }
+          },
+          "401" : {
+            "description" : "When the user doesn't have privileges to perform the action"
+          }
+        }
+      }
+    },
+    "/notebooks/newPlSql" : {
+      "post" : {
+        "tags" : [ "Notebooks" ],
+        "summary" : "Create a new pl/sql notebook",
+        "description" : "This creates a new ScriptScratchPad.\nThe notebook should have the name SQL Script Scratchpad",
+        "operationId" : "createPlSqlNotebook",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "body",
+          "description" : "Object with the new notebook information",
+          "required" : true,
+          "schema" : {
+            "$ref" : "#/definitions/Notebook"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "The body field of the returned JSON contains the new notebook id",
+            "schema" : {
+              "$ref" : "#/definitions/Notebook"
+            }
+          },
+          "401" : {
+            "description" : "When the user doesn't have privileges to perform the action"
+          }
+        }
+      }
+    },
+    "/notebooks/newSql" : {
+      "post" : {
+        "tags" : [ "Notebooks" ],
+        "summary" : "Create a new sql notebook",
+        "description" : "This endpoint is used to create the SqlScratchPad, if will create one if not exist, or return the one that already exist.The notebook should have the Name  SQL Query Scratchpad",
+        "operationId" : "createSqlNotebook",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "body",
+          "description" : "Object with the new notebook information",
+          "required" : true,
+          "schema" : {
+            "$ref" : "#/definitions/Notebook"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "The body field of the returned JSON contains the new notebook id",
+            "schema" : {
+              "$ref" : "#/definitions/Notebook"
+            }
+          },
+          "401" : {
+            "description" : "When the user doesn't have privileges to perform the action"
+          }
+        }
+      }
+    },
+    "/notebooks/upload" : {
+      "post" : {
+        "tags" : [ "Notebooks" ],
+        "summary" : "Upload notebook",
+        "description" : "Upload a notebook from a file",
+        "operationId" : "uploadNotebook",
+        "consumes" : [ "multipart/form-data" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "project",
+          "in" : "query",
+          "description" : "Project to upload the notebook to",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int64"
+        }, {
+          "in" : "body",
+          "name" : "body",
+          "description" : "File input stream pointing to the notebook file",
+          "required" : true,
+          "schema" : {
+            "$ref" : "#/definitions/InputStream"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Notebook uploaded",
+            "schema" : {
+              "$ref" : "#/definitions/Notebook"
+            }
+          },
+          "401" : {
+            "description" : "When the user doesn't have privileges to perform the action"
+          }
+        }
+      }
+    },
+    "/notebooks/versions" : {
+      "post" : {
+        "tags" : [ "Notebooks" ],
+        "summary" : "Create a new notebook version",
+        "description" : "Creates a new notebook version saving the notebook json data",
+        "operationId" : "createNotebookVersion",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "body",
+          "description" : "Variable containing projectId, notebookId, and JSON data for the version",
+          "required" : true,
+          "schema" : {
+            "$ref" : "#/definitions/Version"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "List of versions for the given notebook",
+            "schema" : {
+              "$ref" : "#/definitions/Version"
+            }
+          },
+          "401" : {
+            "description" : "When the user doesn't have privileges to perform the action"
+          }
+        }
+      }
+    },
+    "/notebooks/versions/{ids}" : {
+      "delete" : {
+        "tags" : [ "Notebooks" ],
+        "summary" : "Delete notebook version",
+        "description" : "Deletes a list of specified notebook versions",
+        "operationId" : "deleteVersions",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "ids",
+          "in" : "path",
+          "description" : "List of version ids to delete",
+          "required" : true,
+          "type" : "string",
+          "format" : "version1,version2,.. versionN",
+          "x-example" : "2143,32,.., 948"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Ok (200) if successful operation"
+          },
+          "401" : {
+            "description" : "When the user doesn't have privileges to perform the action"
+          }
+        }
+      }
+    },
+    "/notebooks/{notebookId}/clone" : {
+      "post" : {
+        "tags" : [ "Notebooks" ],
+        "summary" : "Clone a notebook",
+        "description" : "Clone a notebook with all the settings it has.",
+        "operationId" : "cloneNotebook",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "notebookId",
+          "in" : "path",
+          "description" : "Id of the notebook to clone",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int64"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "The body field of the returned JSON contains the new notebook id",
+            "schema" : {
+              "$ref" : "#/definitions/Notebook"
+            }
+          },
+          "401" : {
+            "description" : "When the user doesn't have privileges to perform the action"
+          }
+        }
+      }
+    },
+    "/notebooks/{notebookId}/data" : {
+      "get" : {
+        "tags" : [ "Notebooks" ],
+        "summary" : "Get notebook JSON data",
+        "description" : "Retrieves the JSON data stored in the notebook specified.",
+        "operationId" : "getNotebookData",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "notebookId",
+          "in" : "path",
+          "description" : "Notebook id to retrieve the data from.",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int64"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "String containing the notebook JSON Data"
+          },
+          "401" : {
+            "description" : "When the user doesn't have privileges to perform the action"
+          }
+        }
+      },
+      "put" : {
+        "tags" : [ "Notebooks" ],
+        "summary" : "Persists notebook JSON data",
+        "description" : "Persists the JSON data stored in the notebook specified.",
+        "operationId" : "saveNotebookData",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "notebookId",
+          "in" : "path",
+          "description" : "Notebook id to save the data to",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int64"
+        }, {
+          "in" : "body",
+          "name" : "body",
+          "description" : "JSON Data to save into the notebook",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Ok (200) when operation is successful."
+          },
+          "401" : {
+            "description" : "When the user doesn't have privileges to perform the action"
+          }
+        }
+      }
+    },
+    "/notebooks/{notebookId}/init" : {
+      "post" : {
+        "tags" : [ "Notebooks" ],
+        "summary" : "Init notebook",
+        "description" : "Loads a Zeppelin instance (docker container), if necessary, to run the notebook.\nA cookie is returned with the Zeppelin port.\nWhen the Client makes Zeppelin requests, the reverse proxy server would use the port (in the cookie) to locate the Zeppelin server to forward the requests.",
+        "operationId" : "initNotebook",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "notebookId",
+          "in" : "path",
+          "description" : "Notebook id to init",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int64"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "String containing the Zeppeling information"
+          },
+          "401" : {
+            "description" : "When the user doesn't have privileges to perform the action"
+          }
+        }
+      }
+    },
+    "/notebooks/{notebookId}/name" : {
+      "put" : {
+        "tags" : [ "Notebooks" ],
+        "summary" : "Save JSON data and rename with contained name",
+        "description" : "Persists the JSON data into a notebook and renames it with the name specified in the JSON data.",
+        "operationId" : "saveNotebookNameAndData",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "notebookId",
+          "in" : "path",
+          "description" : "Notebook id to save the data to",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int64"
+        }, {
+          "in" : "body",
+          "name" : "body",
+          "description" : "JSON Data to save into the notebook containing a name",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Ok (200) when operation is successful."
+          },
+          "401" : {
+            "description" : "When the user doesn't have privileges to perform the action"
+          }
+        }
+      }
+    },
+    "/notebooks/{notebookId}/permissions" : {
+      "get" : {
+        "tags" : [ "Notebooks" ],
+        "summary" : "Get notebook permissions",
+        "description" : "Retrieves the notebook permission",
+        "operationId" : "getNotebookPermissionList",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "notebookId",
+          "in" : "path",
+          "description" : "Notebook id to save the data to",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int64"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "List of notebook permissions",
+            "schema" : {
+              "$ref" : "#/definitions/UserPermission"
+            }
+          },
+          "401" : {
+            "description" : "When the user doesn't have privileges to perform the action"
+          }
+        }
+      }
+    },
+    "/notebooks/{notebookId}/versions" : {
+      "get" : {
+        "tags" : [ "Notebooks" ],
+        "summary" : "List notebook versions",
+        "description" : "List the versions for the specified notebook",
+        "operationId" : "getNotebookVersions",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "notebookId",
+          "in" : "path",
+          "description" : "Notebook id to retrieve the versions",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int64"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "List of notebook version",
+            "schema" : {
+              "$ref" : "#/definitions/Version"
+            }
+          },
+          "401" : {
+            "description" : "When the user doesn't have privileges to perform the action"
+          }
+        }
+      }
+    },
+    "/notebooks/{notebookId}/versions/{versionId}/clone" : {
+      "post" : {
+        "tags" : [ "Notebooks" ],
+        "summary" : "Create a new notebook from version",
+        "description" : "Creates a new notebook based on the JSON data saved on a notebook version",
+        "operationId" : "createNotebookFromVersion",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "notebookId",
+          "in" : "path",
+          "description" : "Notebook id to retrieve the information",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int64"
+        }, {
+          "name" : "versionId",
+          "in" : "path",
+          "description" : "Notebook version id to obtain the JSON data for the new notebook",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int64"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "The body field of the returned JSON contains the new notebook id",
+            "schema" : {
+              "$ref" : "#/definitions/Notebook"
+            }
+          },
+          "401" : {
+            "description" : "When the user doesn't have privileges to perform the action"
+          }
+        }
+      }
+    },
+    "/notebooks/{notebookId}/versions/{versionId}/data" : {
+      "get" : {
+        "tags" : [ "Notebooks" ],
+        "summary" : "Get notebook JSON data from version",
+        "description" : "Obtains the JSON data stored in a notebook version",
+        "operationId" : "getNotebookJSONFromVersion",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "notebookId",
+          "in" : "path",
+          "description" : "Notebook id to retrieve the information",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int64"
+        }, {
+          "name" : "versionId",
+          "in" : "path",
+          "description" : "Version id to retrieve the information",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int64"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "String containing the notebook JSON data"
+          },
+          "401" : {
+            "description" : "When the user doesn't have privileges to perform the action"
+          }
+        }
+      }
+    },
+    "/notebooks/{notebookId}/versions/{versionId}/restore" : {
+      "post" : {
+        "tags" : [ "Notebooks" ],
+        "summary" : "Restore a notebook version",
+        "description" : "Restores a notebook from the specified version.",
+        "operationId" : "restoreNotebookVersion",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "notebookId",
+          "in" : "path",
+          "description" : "Notebook id to retrieve the information",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int64"
+        }, {
+          "name" : "versionId",
+          "in" : "path",
+          "description" : "Version id to retrieve the JSON data",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int64"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Ok (200) when the operation is successful"
+          },
+          "401" : {
+            "description" : "When the user doesn't have privileges to perform the action"
+          }
+        }
+      }
+    },
+    "/notebooks/{notebooksIds}" : {
+      "delete" : {
+        "tags" : [ "Notebooks" ],
+        "summary" : "Delete notebooks",
+        "description" : "Deletes a collection of one or more notebooks.",
+        "operationId" : "deleteNotebook",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "notebooksIds",
+          "in" : "path",
+          "description" : "List of notebook ids",
+          "required" : true,
+          "type" : "string",
+          "format" : "notebookId1,notebookId2,.. notebookIdn",
+          "x-example" : "2143,32,.., 948"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "List of successfuly deleted notebooks"
+          },
+          "401" : {
+            "description" : "When the user doesn't have privileges to perform the action"
+          }
+        }
+      }
+    },
+    "/projects" : {
+      "get" : {
+        "tags" : [ "Project" ],
+        "summary" : "List project",
+        "description" : "Lists the available projects for the given workspace.",
+        "operationId" : "listProject",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "workspace",
+          "in" : "query",
+          "description" : "Workspace id",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int64",
+          "x-example" : 23
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "List of successfuly deleted templates",
+            "schema" : {
+              "type" : "array",
+              "items" : {
+                "$ref" : "#/definitions/Project"
+              }
+            }
+          },
+          "401" : {
+            "description" : "When the user doesn't have privileges to perform the action"
+          }
+        }
+      },
+      "post" : {
+        "tags" : [ "Project" ],
+        "summary" : "Create project",
+        "description" : "Creates a new user project.",
+        "operationId" : "createProject",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "body",
+          "description" : "Object with the new workspace information",
+          "required" : true,
+          "schema" : {
+            "$ref" : "#/definitions/Project"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "The body field of the returned JSON contains the new project id",
+            "schema" : {
+              "$ref" : "#/definitions/Project"
+            }
+          },
+          "401" : {
+            "description" : "When the user doesn't have privileges to perform the action"
+          }
+        }
+      },
+      "put" : {
+        "tags" : [ "Project" ],
+        "summary" : "Update project",
+        "description" : "Updates an existing project with the new properties.",
+        "operationId" : "updateProject",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "body",
+          "description" : "Project to be updated",
+          "required" : true,
+          "schema" : {
+            "$ref" : "#/definitions/Project"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Project with updated information",
+            "schema" : {
+              "$ref" : "#/definitions/Project"
+            }
+          },
+          "401" : {
+            "description" : "When the user doesn't have privileges to perform the action"
+          }
+        }
+      }
+    },
+    "/projects/{projectIds}" : {
+      "delete" : {
+        "tags" : [ "Project" ],
+        "summary" : "Delete projects",
+        "description" : "Deletes a collection of one or more projects.",
+        "operationId" : "deleteProjects",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "projectIds",
+          "in" : "path",
+          "description" : "List of project ids",
+          "required" : true,
+          "type" : "string",
+          "format" : "project1,project2,.. project3",
+          "x-example" : "12,45"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "List of successfuly deleted projects"
+          },
+          "401" : {
+            "description" : "When the user doesn't have privileges to perform the action"
+          }
+        }
+      }
+    },
+    "/projects/{projectIds}/any_shared" : {
+      "get" : {
+        "tags" : [ "Project" ],
+        "summary" : "Return if shared project",
+        "description" : "Returns true if there are shared projects in the list",
+        "operationId" : "areProjectsShared",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "projectIds",
+          "in" : "path",
+          "description" : "List of projects id",
+          "required" : true,
+          "type" : "string",
+          "x-example" : "34, 45, 6"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Boolean indicating whether the projects are shared or not"
+          },
+          "401" : {
+            "description" : "When the user doesn't have privileges to perform the action"
+          }
+        }
+      }
+    },
+    "/tags" : {
+      "get" : {
+        "tags" : [ "Tags" ],
+        "summary" : "Lists Tags.",
+        "description" : "Get a listing of existing tags",
+        "operationId" : "listTags",
+        "produces" : [ "application/json" ],
+        "responses" : {
+          "200" : {
+            "description" : "List of found tags",
+            "schema" : {
+              "type" : "array",
+              "items" : {
+                "$ref" : "#/definitions/MLLabObject"
+              }
+            }
+          },
+          "401" : {
+            "description" : "When the user doesn't have privileges to perform the action"
+          }
+        }
+      }
+    },
+    "/templates/{id}/duplicate" : {
+      "post" : {
+        "tags" : [ "Templates" ],
+        "summary" : "Duplicate template",
+        "description" : "Duplicates a new template from a template with specified id",
+        "operationId" : "duplicateTemplate",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "description" : "Template id",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int64"
+        }, {
+          "name" : "astype",
+          "in" : "query",
+          "description" : "Template type to create",
+          "required" : true,
+          "type" : "string",
+          "x-example" : "\"shared\"",
+          "enum" : [ "example", "shared", "personal" ]
+        }, {
+          "in" : "body",
+          "name" : "body",
+          "description" : "Object with the new template information",
+          "required" : true,
+          "schema" : {
+            "$ref" : "#/definitions/Template"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "The body field of the returned JSON contains the new Template",
+            "schema" : {
+              "$ref" : "#/definitions/Template"
+            }
+          },
+          "401" : {
+            "description" : "When the user doesn't have privileges to perform the action"
+          }
+        }
+      }
+    },
+    "/templates/{id}/init" : {
+      "post" : {
+        "tags" : [ "Templates" ],
+        "summary" : "Init Template",
+        "description" : "Loads a Zeppelin instance (docker container), if necessary, to load the template notebook.",
+        "operationId" : "initTemplate",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "description" : "Template id to init",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int64"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Template data"
+          },
+          "401" : {
+            "description" : "A cookie is returned with the Zeppelin port.When the Client makes Zeppelin requests, the reverse proxy server would use the port (in the cookie) to locate the Zeppelin server to forward the requests."
+          }
+        }
+      }
+    },
+    "/templates/{type}" : {
+      "get" : {
+        "tags" : [ "Templates" ],
+        "summary" : "Lists templates.",
+        "description" : "Get a listing of existing templates for a given template type",
+        "operationId" : "listTemplates",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "type",
+          "in" : "path",
+          "description" : "Template type to return",
+          "required" : true,
+          "type" : "string",
+          "x-example" : "\"shared\"",
+          "enum" : [ "example", "shared", "personal" ]
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "List of templates of the given type",
+            "schema" : {
+              "type" : "array",
+              "items" : {
+                "$ref" : "#/definitions/Template"
+              }
+            }
+          },
+          "401" : {
+            "description" : "When the user doesn't have privileges to perform the action"
+          }
+        }
+      },
+      "post" : {
+        "tags" : [ "Templates" ],
+        "summary" : "Create template",
+        "description" : "Creates a new template from a notebook with specified id",
+        "operationId" : "createTemplate",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "type",
+          "in" : "path",
+          "description" : "Template type",
+          "required" : true,
+          "type" : "string",
+          "x-example" : "\"shared\"",
+          "enum" : [ "example", "shared", "personal" ]
+        }, {
+          "in" : "body",
+          "name" : "body",
+          "description" : "Object with the new template information",
+          "required" : true,
+          "schema" : {
+            "$ref" : "#/definitions/Template"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "The body field of the returned JSON contains the new Template id",
+            "schema" : {
+              "$ref" : "#/definitions/Template"
+            }
+          },
+          "401" : {
+            "description" : "When the user doesn't have privileges to perform the action"
+          }
+        }
+      }
+    },
+    "/templates/{type}/{id}" : {
+      "put" : {
+        "tags" : [ "Templates" ],
+        "summary" : "Update template",
+        "description" : "Updates an existing template with the new properties.",
+        "operationId" : "updateTemplate",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "type",
+          "in" : "path",
+          "description" : "Template type to delete",
+          "required" : true,
+          "type" : "string",
+          "x-example" : "\"shared\"",
+          "enum" : [ "example", "shared", "personal" ]
+        }, {
+          "name" : "id",
+          "in" : "path",
+          "description" : "Template id",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "in" : "body",
+          "name" : "body",
+          "description" : "Template object to update",
+          "required" : true,
+          "schema" : {
+            "$ref" : "#/definitions/Template"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Template with updated information",
+            "schema" : {
+              "$ref" : "#/definitions/Template"
+            }
+          },
+          "401" : {
+            "description" : "When the user doesn't have privileges to perform the action"
+          }
+        }
+      }
+    },
+    "/templates/{type}/{id}/create_notebook" : {
+      "post" : {
+        "tags" : [ "Templates" ],
+        "summary" : "Create notebook from template",
+        "description" : "Creates a new notebook from a template with specified id",
+        "operationId" : "createNotebookFromTemplate",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "type",
+          "in" : "path",
+          "description" : "Type of the template that will be used to create the notebook",
+          "required" : true,
+          "type" : "string",
+          "x-example" : "\"shared\"",
+          "enum" : [ "example", "shared", "personal" ]
+        }, {
+          "name" : "id",
+          "in" : "path",
+          "description" : "Template id",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int64"
+        }, {
+          "in" : "body",
+          "name" : "body",
+          "description" : "Object used to pass in template criteria to create a notebook.",
+          "required" : true,
+          "schema" : {
+            "$ref" : "#/definitions/TemplateRequest"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "The newly created notebook",
+            "schema" : {
+              "$ref" : "#/definitions/Notebook"
+            }
+          },
+          "401" : {
+            "description" : "When the user doesn't have privileges to perform the action"
+          }
+        }
+      }
+    },
+    "/templates/{type}/{id}/data" : {
+      "get" : {
+        "tags" : [ "Templates" ],
+        "summary" : "Get Template Data",
+        "description" : "Retrieves the notebook JSON data stored in the template",
+        "operationId" : "getTemplateData",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "type",
+          "in" : "path",
+          "description" : "Template type to return",
+          "required" : true,
+          "type" : "string",
+          "x-example" : "\"shared\"",
+          "enum" : [ "example", "shared", "personal" ]
+        }, {
+          "name" : "id",
+          "in" : "path",
+          "description" : "Template id to retrieve the notebook data",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int64"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Notebook data"
+          },
+          "401" : {
+            "description" : "When the user doesn't have privileges to perform the action"
+          }
+        }
+      }
+    },
+    "/templates/{type}/{id}/liked" : {
+      "post" : {
+        "tags" : [ "Templates" ],
+        "summary" : "Set template like status",
+        "description" : "Set whether the template is liked or not.",
+        "operationId" : "setLiked",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "type",
+          "in" : "path",
+          "description" : "Template type to return",
+          "required" : true,
+          "type" : "string",
+          "x-example" : "\"shared\"",
+          "enum" : [ "example", "shared", "personal" ]
+        }, {
+          "name" : "id",
+          "in" : "path",
+          "description" : "Template id, whose count needs to be incremented",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int64"
+        }, {
+          "in" : "body",
+          "name" : "body",
+          "description" : "Whether the user liked or not the template",
+          "required" : true,
+          "schema" : {
+            "type" : "boolean"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Object containing the liked count for the template",
+            "schema" : {
+              "$ref" : "#/definitions/TemplateLikeResponse"
+            }
+          },
+          "401" : {
+            "description" : "When the user doesn't have privileges to perform the action"
+          }
+        }
+      }
+    },
+    "/templates/{type}/{id}/used" : {
+      "post" : {
+        "tags" : [ "Templates" ],
+        "summary" : "Increments template's used counter",
+        "description" : "Increments template's used counter. Used counters are only maintained for shared and example templates.",
+        "operationId" : "incrementUsedCount",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "type",
+          "in" : "path",
+          "description" : "Template type to return",
+          "required" : true,
+          "type" : "string",
+          "x-example" : "\"shared\"",
+          "enum" : [ "example", "shared" ]
+        }, {
+          "name" : "id",
+          "in" : "path",
+          "description" : "Template id, whose count needs to be incremented",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int64"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Whether the used count was incremented"
+          },
+          "401" : {
+            "description" : "When the user doesn't have privileges to perform the action"
+          }
+        }
+      }
+    },
+    "/templates/{type}/{id}/viewed" : {
+      "post" : {
+        "tags" : [ "Templates" ],
+        "summary" : "Increments template's viewed counter",
+        "description" : "Increments template's viewed counter. Used counters are only maintained for shared and example templates.",
+        "operationId" : "incrementViewedCount",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "type",
+          "in" : "path",
+          "description" : "Template type to return",
+          "required" : true,
+          "type" : "string",
+          "x-example" : "\"shared\"",
+          "enum" : [ "example", "shared", "personal" ]
+        }, {
+          "name" : "id",
+          "in" : "path",
+          "description" : "Template id, whose count needs to be incremented",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int64"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Whether the viewed count was incremented"
+          },
+          "401" : {
+            "description" : "When the user doesn't have privileges to perform the action"
+          }
+        }
+      }
+    },
+    "/workspaces" : {
+      "get" : {
+        "tags" : [ "Workspaces" ],
+        "summary" : "Lists workspaces.",
+        "description" : "Get a listing of existing workspaces",
+        "operationId" : "listWorkspaces",
+        "produces" : [ "application/json" ],
+        "responses" : {
+          "200" : {
+            "description" : "List of workspaces",
+            "schema" : {
+              "type" : "array",
+              "items" : {
+                "$ref" : "#/definitions/Workspace"
+              }
+            }
+          },
+          "401" : {
+            "description" : "When the user doesn't have privileges to perform the action"
+          }
+        }
+      },
+      "post" : {
+        "tags" : [ "Workspaces" ],
+        "summary" : "Create workspace",
+        "description" : "Creates a new user workspace.",
+        "operationId" : "createWorkspace",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "body",
+          "description" : "Object with the new workspace information",
+          "required" : true,
+          "schema" : {
+            "$ref" : "#/definitions/Workspace"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "The body field of the returned JSON contains the new workspace id",
+            "schema" : {
+              "$ref" : "#/definitions/Workspace"
+            }
+          },
+          "401" : {
+            "description" : "When the user doesn't have privileges to perform the action"
+          }
+        }
+      },
+      "put" : {
+        "tags" : [ "Workspaces" ],
+        "summary" : "Update workspace",
+        "description" : "Updates an existing workspace with the new properties.",
+        "operationId" : "updateWorkspace",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "body",
+          "description" : "Workspace to be updated",
+          "required" : true,
+          "schema" : {
+            "$ref" : "#/definitions/Workspace"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Workspace with updated information",
+            "schema" : {
+              "$ref" : "#/definitions/Workspace"
+            }
+          },
+          "401" : {
+            "description" : "When the user doesn't have privileges to perform the action"
+          }
+        }
+      }
+    },
+    "/workspaces/objects" : {
+      "get" : {
+        "tags" : [ "Workspaces" ],
+        "summary" : "Lists workspaces with projects",
+        "description" : "Lists the available workspaces with objects for the given user",
+        "operationId" : "listWorkspacesWithObjects",
+        "produces" : [ "application/json" ],
+        "responses" : {
+          "200" : {
+            "description" : "List of ParentChild with the workspace/project/notebook tree structure",
+            "schema" : {
+              "type" : "array",
+              "items" : {
+                "$ref" : "#/definitions/ParentChild"
+              }
+            }
+          },
+          "401" : {
+            "description" : "When the user doesn't have privileges to perform the action"
+          }
+        }
+      }
+    },
+    "/workspaces/projects" : {
+      "get" : {
+        "tags" : [ "Workspaces" ],
+        "summary" : "Lists workspaces with projects",
+        "description" : "Lists the available workspaces with projects for the given user",
+        "operationId" : "listWorkspacesWithProjects",
+        "produces" : [ "application/json" ],
+        "responses" : {
+          "200" : {
+            "description" : "List of ParentChild with the workspace/project/notebook tree structure",
+            "schema" : {
+              "type" : "array",
+              "items" : {
+                "$ref" : "#/definitions/ParentChild"
+              }
+            }
+          },
+          "401" : {
+            "description" : "When the user doesn't have privileges to perform the action"
+          }
+        }
+      }
+    },
+    "/workspaces/{workspaceIds}" : {
+      "delete" : {
+        "tags" : [ "Workspaces" ],
+        "summary" : "Delete workspaces",
+        "description" : "Deletes a collection of one or more workspaces.",
+        "operationId" : "deleteWorkspace",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "workspaceIds",
+          "in" : "path",
+          "description" : "List of workspace ids",
+          "required" : true,
+          "type" : "string",
+          "format" : "workspace1,workspace2,.. workspace3",
+          "x-example" : "243,676,.., 944"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "List of successfuly deleted workspaces"
+          },
+          "401" : {
+            "description" : "When the user doesn't have privileges to perform the action"
+          }
+        }
+      }
+    },
+    "/workspaces/{workspaceIds}/any_shared" : {
+      "get" : {
+        "tags" : [ "Workspaces" ],
+        "summary" : "Are workspaces shared",
+        "description" : "Determine if provided workspaces are shared",
+        "operationId" : "areWorkspacesShared",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "workspaceIds",
+          "in" : "path",
+          "description" : "List of Workspace Ids",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Whether the workspaces are shared or not"
+          },
+          "401" : {
+            "description" : "When the user doesn't have privileges to perform the action"
+          }
+        }
+      }
+    },
+    "/workspaces/{workspaceIds}/has_running_notebooks" : {
+      "get" : {
+        "tags" : [ "Workspaces" ],
+        "summary" : "Workspaces have running notebooks",
+        "description" : "Determine if provided workspaces have running notebooks",
+        "operationId" : "hasRunningNotebooks",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "workspaceIds",
+          "in" : "path",
+          "description" : "List of Workspace Ids",
+          "required" : true,
+          "type" : "string",
+          "x-example" : "1,2,3,4,5"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Whether the workspaces have private notebooks or not"
+          },
+          "401" : {
+            "description" : "When the user doesn't have privileges to perform the action"
+          }
+        }
+      }
+    },
+    "/workspaces/{workspaceId}/has_private_notebooks" : {
+      "get" : {
+        "tags" : [ "Workspaces" ],
+        "summary" : "Workspace has private notebooks",
+        "description" : "Determine if provided workspace has private notebooks",
+        "operationId" : "hasPrivateNotebooks",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "workspaceId",
+          "in" : "path",
+          "description" : "Workspace Id",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int64"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Whether the workspace has private notebooks or not"
+          },
+          "401" : {
+            "description" : "When the user doesn't have privileges to perform the action"
+          }
+        }
+      }
+    },
+    "/workspaces/{workspaceId}/isowner" : {
+      "get" : {
+        "tags" : [ "Workspaces" ],
+        "summary" : "Is user the workspace owner",
+        "description" : "Determine if provided user is the owner of the specified workspace",
+        "operationId" : "isOwner",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "workspaceId",
+          "in" : "path",
+          "description" : "Workspace Id",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int64"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Whether the user is the owner of the workspace"
+          },
+          "401" : {
+            "description" : "When the user doesn't have privileges to perform the action"
+          }
+        }
+      }
+    },
+    "/workspaces/{workspaceId}/permissions" : {
+      "get" : {
+        "tags" : [ "Workspaces" ],
+        "summary" : "Lists workspace permissions",
+        "description" : "Lists the permissions for the given workspace.",
+        "operationId" : "listWorkspacePermissions",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "workspaceId",
+          "in" : "path",
+          "description" : "Workspace Id",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int64"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "List of permission on the workspace",
+            "schema" : {
+              "type" : "array",
+              "items" : {
+                "$ref" : "#/definitions/Permission"
+              }
+            }
+          },
+          "401" : {
+            "description" : "When the user doesn't have privileges to perform the action"
+          }
+        }
+      },
+      "put" : {
+        "tags" : [ "Workspaces" ],
+        "summary" : "Update workspace permissions",
+        "description" : "Updates permissions for the given workspace",
+        "operationId" : "setWorkspacePermissions",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "workspaceId",
+          "in" : "path",
+          "description" : "Workspace Id",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int64"
+        }, {
+          "in" : "body",
+          "name" : "body",
+          "description" : "List of permissions to set",
+          "required" : true,
+          "schema" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/definitions/Permission"
+            }
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Success if permissions were updated"
+          },
+          "401" : {
+            "description" : "When the user doesn't have privileges to perform the action"
+          }
+        }
+      }
+    },
+    "/zeppelin/shutdown" : {
+      "post" : {
+        "tags" : [ "Zeppelin" ],
+        "summary" : "Shutdown",
+        "description" : "Shutdown Zeppelin server",
+        "operationId" : "shutdownServer",
+        "produces" : [ "application/json" ],
+        "responses" : {
+          "200" : {
+            "description" : "Successfully shutdown zeppelin server."
+          },
+          "400" : {
+            "description" : "When the Zeppelin server has not been started.",
+            "schema" : {
+              "$ref" : "#/definitions/ZeppelinNotStartedException"
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions" : {
+    "Activity" : {
+      "type" : "object",
+      "properties" : {
+        "id" : {
+          "type" : "integer",
+          "format" : "int64"
+        },
+        "type" : {
+          "type" : "string"
+        },
+        "objectType" : {
+          "type" : "string"
+        },
+        "objectId" : {
+          "type" : "integer",
+          "format" : "int64"
+        },
+        "objectName" : {
+          "type" : "string"
+        },
+        "date" : {
+          "type" : "string",
+          "format" : "date-time"
+        },
+        "data" : {
+          "type" : "string"
+        },
+        "workspaceId" : {
+          "type" : "integer",
+          "format" : "int64"
+        },
+        "workspaceName" : {
+          "type" : "string"
+        },
+        "workspaceOwnerId" : {
+          "type" : "integer",
+          "format" : "int64"
+        },
+        "projectId" : {
+          "type" : "integer",
+          "format" : "int64"
+        },
+        "projectName" : {
+          "type" : "string"
+        },
+        "user" : {
+          "$ref" : "#/definitions/User"
+        },
+        "owner" : {
+          "$ref" : "#/definitions/User"
+        }
+      }
+    },
+    "ComputeResource" : {
+      "type" : "object",
+      "properties" : {
+        "id" : {
+          "type" : "integer",
+          "format" : "int64"
+        },
+        "name" : {
+          "type" : "string"
+        },
+        "userId" : {
+          "type" : "integer",
+          "format" : "int64"
+        },
+        "createdBy" : {
+          "type" : "integer",
+          "format" : "int64"
+        },
+        "updatedBy" : {
+          "type" : "integer",
+          "format" : "int64"
+        },
+        "comments" : {
+          "type" : "string"
+        },
+        "userName" : {
+          "type" : "string"
+        },
+        "created" : {
+          "type" : "string",
+          "format" : "date-time"
+        },
+        "updated" : {
+          "type" : "string",
+          "format" : "date-time"
+        },
+        "createdByName" : {
+          "type" : "string"
+        },
+        "updatedByName" : {
+          "type" : "string"
+        },
+        "settings" : {
+          "type" : "object",
+          "additionalProperties" : {
+            "$ref" : "#/definitions/ConnectionSetting"
+          }
+        },
+        "isPublic" : {
+          "type" : "string"
+        },
+        "dependents" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/ComputeResource"
+          }
+        },
+        "resourceType" : {
+          "type" : "string",
+          "enum" : [ "HIVE", "LIVY", "MYSQL", "ORACLE", "ORAAH", "ORE", "PGX", "RSERVE", "UNKNOWN" ]
+        }
+      }
+    },
+    "Connection" : {
+      "type" : "object",
+      "properties" : {
+        "id" : {
+          "type" : "integer",
+          "format" : "int64"
+        },
+        "name" : {
+          "type" : "string"
+        },
+        "userId" : {
+          "type" : "integer",
+          "format" : "int64"
+        },
+        "createdBy" : {
+          "type" : "integer",
+          "format" : "int64"
+        },
+        "updatedBy" : {
+          "type" : "integer",
+          "format" : "int64"
+        },
+        "comments" : {
+          "type" : "string"
+        },
+        "userName" : {
+          "type" : "string"
+        },
+        "created" : {
+          "type" : "string",
+          "format" : "date-time"
+        },
+        "updated" : {
+          "type" : "string",
+          "format" : "date-time"
+        },
+        "createdByName" : {
+          "type" : "string"
+        },
+        "updatedByName" : {
+          "type" : "string"
+        },
+        "settings" : {
+          "type" : "object",
+          "additionalProperties" : {
+            "$ref" : "#/definitions/ConnectionSetting"
+          }
+        },
+        "zeppelinId" : {
+          "type" : "string"
+        },
+        "connectionGroupId" : {
+          "type" : "integer",
+          "format" : "int64"
+        },
+        "computeResourceId" : {
+          "type" : "integer",
+          "format" : "int64"
+        },
+        "connectionType" : {
+          "type" : "string",
+          "enum" : [ "ANGULAR", "LIVY", "MD", "MYSQL", "ORACLE", "ORAAH", "ORE", "PGX", "UNKNOWN" ]
+        },
+        "computeResource" : {
+          "$ref" : "#/definitions/ComputeResource"
+        },
+        "bindingMode" : {
+          "type" : "string",
+          "enum" : [ "SHARED", "SCOPED", "ISOLATED" ]
+        },
+        "interpreterGroup" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/InterpreterMetadata"
+          }
+        }
+      }
+    },
+    "ConnectionGroup" : {
+      "type" : "object",
+      "properties" : {
+        "id" : {
+          "type" : "integer",
+          "format" : "int64"
+        },
+        "name" : {
+          "type" : "string"
+        },
+        "userId" : {
+          "type" : "integer",
+          "format" : "int64"
+        },
+        "createdBy" : {
+          "type" : "integer",
+          "format" : "int64"
+        },
+        "updatedBy" : {
+          "type" : "integer",
+          "format" : "int64"
+        },
+        "comments" : {
+          "type" : "string"
+        },
+        "userName" : {
+          "type" : "string"
+        },
+        "created" : {
+          "type" : "string",
+          "format" : "date-time"
+        },
+        "updated" : {
+          "type" : "string",
+          "format" : "date-time"
+        },
+        "createdByName" : {
+          "type" : "string"
+        },
+        "updatedByName" : {
+          "type" : "string"
+        },
+        "version" : {
+          "type" : "integer",
+          "format" : "int32"
+        },
+        "isDefault" : {
+          "type" : "string"
+        },
+        "scope" : {
+          "type" : "string"
+        },
+        "connections" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/Connection"
+          }
+        }
+      }
+    },
+    "ConnectionSetting" : {
+      "type" : "object",
+      "properties" : {
+        "name" : {
+          "type" : "string"
+        },
+        "value" : {
+          "type" : "string"
+        },
+        "metaData" : {
+          "type" : "string"
+        },
+        "mutable" : {
+          "type" : "boolean"
+        }
+      }
+    },
+    "InputStream" : {
+      "type" : "object"
+    },
+    "InteractiveSession" : {
+      "type" : "object"
+    },
+    "InterpreterMetadata" : {
+      "type" : "object",
+      "properties" : {
+        "id" : {
+          "type" : "integer",
+          "format" : "int64"
+        },
+        "name" : {
+          "type" : "string"
+        },
+        "userId" : {
+          "type" : "integer",
+          "format" : "int64"
+        },
+        "createdBy" : {
+          "type" : "integer",
+          "format" : "int64"
+        },
+        "updatedBy" : {
+          "type" : "integer",
+          "format" : "int64"
+        },
+        "comments" : {
+          "type" : "string"
+        },
+        "userName" : {
+          "type" : "string"
+        },
+        "created" : {
+          "type" : "string",
+          "format" : "date-time"
+        },
+        "updated" : {
+          "type" : "string",
+          "format" : "date-time"
+        },
+        "createdByName" : {
+          "type" : "string"
+        },
+        "updatedByName" : {
+          "type" : "string"
+        },
+        "settings" : {
+          "type" : "object",
+          "additionalProperties" : {
+            "$ref" : "#/definitions/ConnectionSetting"
+          }
+        },
+        "className" : {
+          "type" : "string"
+        }
+      }
+    },
+    "Job" : {
+      "type" : "object",
+      "properties" : {
+        "id" : {
+          "type" : "integer",
+          "format" : "int64"
+        },
+        "name" : {
+          "type" : "string"
+        },
+        "userId" : {
+          "type" : "integer",
+          "format" : "int64"
+        },
+        "createdBy" : {
+          "type" : "integer",
+          "format" : "int64"
+        },
+        "updatedBy" : {
+          "type" : "integer",
+          "format" : "int64"
+        },
+        "comments" : {
+          "type" : "string"
+        },
+        "userName" : {
+          "type" : "string"
+        },
+        "created" : {
+          "type" : "string",
+          "format" : "date-time"
+        },
+        "updated" : {
+          "type" : "string",
+          "format" : "date-time"
+        },
+        "createdByName" : {
+          "type" : "string"
+        },
+        "updatedByName" : {
+          "type" : "string"
+        },
+        "owner" : {
+          "type" : "string"
+        },
+        "itemName" : {
+          "type" : "string"
+        },
+        "itemId" : {
+          "type" : "integer",
+          "format" : "int64"
+        },
+        "startDate" : {
+          "type" : "string"
+        },
+        "repeat" : {
+          "type" : "string"
+        },
+        "lastStartDate" : {
+          "type" : "string"
+        },
+        "nextRunDate" : {
+          "type" : "string"
+        },
+        "status" : {
+          "type" : "string"
+        },
+        "schedule" : {
+          "type" : "string"
+        },
+        "timeZone" : {
+          "type" : "string"
+        },
+        "emails" : {
+          "type" : "string"
+        },
+        "maxNumRuns" : {
+          "type" : "integer",
+          "format" : "int32"
+        },
+        "maxFailures" : {
+          "type" : "integer",
+          "format" : "int32"
+        },
+        "timeout" : {
+          "type" : "integer",
+          "format" : "int32"
+        },
+        "events" : {
+          "type" : "array",
+          "items" : {
+            "type" : "string"
+          }
+        }
+      }
+    },
+    "JobCollection" : {
+      "type" : "object",
+      "properties" : {
+        "name" : {
+          "type" : "string"
+        },
+        "jobs" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/Job"
+          }
+        }
+      }
+    },
+    "MLLabObject" : {
+      "type" : "object",
+      "properties" : {
+        "id" : {
+          "type" : "integer",
+          "format" : "int64"
+        },
+        "name" : {
+          "type" : "string"
+        },
+        "userId" : {
+          "type" : "integer",
+          "format" : "int64"
+        },
+        "createdBy" : {
+          "type" : "integer",
+          "format" : "int64"
+        },
+        "updatedBy" : {
+          "type" : "integer",
+          "format" : "int64"
+        },
+        "comments" : {
+          "type" : "string"
+        },
+        "userName" : {
+          "type" : "string"
+        },
+        "created" : {
+          "type" : "string",
+          "format" : "date-time"
+        },
+        "updated" : {
+          "type" : "string",
+          "format" : "date-time"
+        },
+        "createdByName" : {
+          "type" : "string"
+        },
+        "updatedByName" : {
+          "type" : "string"
+        }
+      }
+    },
+    "Notebook" : {
+      "type" : "object",
+      "properties" : {
+        "id" : {
+          "type" : "integer",
+          "format" : "int64"
+        },
+        "name" : {
+          "type" : "string"
+        },
+        "userId" : {
+          "type" : "integer",
+          "format" : "int64"
+        },
+        "createdBy" : {
+          "type" : "integer",
+          "format" : "int64"
+        },
+        "updatedBy" : {
+          "type" : "integer",
+          "format" : "int64"
+        },
+        "comments" : {
+          "type" : "string"
+        },
+        "userName" : {
+          "type" : "string"
+        },
+        "created" : {
+          "type" : "string",
+          "format" : "date-time"
+        },
+        "updated" : {
+          "type" : "string",
+          "format" : "date-time"
+        },
+        "createdByName" : {
+          "type" : "string"
+        },
+        "updatedByName" : {
+          "type" : "string"
+        },
+        "data" : {
+          "type" : "string"
+        },
+        "projectId" : {
+          "type" : "integer",
+          "format" : "int64"
+        },
+        "version" : {
+          "type" : "integer",
+          "format" : "int32"
+        },
+        "connectionGroupId" : {
+          "type" : "integer",
+          "format" : "int64"
+        },
+        "connectionGroupName" : {
+          "type" : "string"
+        }
+      }
+    },
+    "NotebookCountLimit" : {
+      "type" : "object",
+      "properties" : {
+        "status" : {
+          "type" : "string"
+        },
+        "percentage" : {
+          "type" : "number",
+          "format" : "double"
+        }
+      }
+    },
+    "ParentChild" : {
+      "type" : "object",
+      "properties" : {
+        "attr" : {
+          "$ref" : "#/definitions/ParentChildAttr"
+        },
+        "children" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/ParentChild"
+          }
+        }
+      }
+    },
+    "ParentChildAttr" : {
+      "type" : "object",
+      "properties" : {
+        "parentId" : {
+          "type" : "integer",
+          "format" : "int64"
+        },
+        "id" : {
+          "type" : "integer",
+          "format" : "int64"
+        },
+        "name" : {
+          "type" : "string"
+        },
+        "owner" : {
+          "type" : "string"
+        },
+        "comment" : {
+          "type" : "string"
+        },
+        "type" : {
+          "type" : "string"
+        },
+        "permission" : {
+          "type" : "boolean"
+        }
+      }
+    },
+    "Permission" : {
+      "type" : "object",
+      "properties" : {
+        "granteeId" : {
+          "type" : "integer",
+          "format" : "int64"
+        },
+        "granteeName" : {
+          "type" : "string"
+        },
+        "permission" : {
+          "type" : "string"
+        }
+      }
+    },
+    "Preference" : {
+      "type" : "object",
+      "properties" : {
+        "timezone" : {
+          "$ref" : "#/definitions/TimeZone"
+        }
+      }
+    },
+    "Profile" : {
+      "type" : "object",
+      "properties" : {
+        "user" : {
+          "$ref" : "#/definitions/User"
+        },
+        "preference" : {
+          "$ref" : "#/definitions/Preference"
+        }
+      }
+    },
+    "Project" : {
+      "type" : "object",
+      "properties" : {
+        "id" : {
+          "type" : "integer",
+          "format" : "int64"
+        },
+        "name" : {
+          "type" : "string"
+        },
+        "userId" : {
+          "type" : "integer",
+          "format" : "int64"
+        },
+        "createdBy" : {
+          "type" : "integer",
+          "format" : "int64"
+        },
+        "updatedBy" : {
+          "type" : "integer",
+          "format" : "int64"
+        },
+        "comments" : {
+          "type" : "string"
+        },
+        "userName" : {
+          "type" : "string"
+        },
+        "created" : {
+          "type" : "string",
+          "format" : "date-time"
+        },
+        "updated" : {
+          "type" : "string",
+          "format" : "date-time"
+        },
+        "createdByName" : {
+          "type" : "string"
+        },
+        "updatedByName" : {
+          "type" : "string"
+        },
+        "workspaceId" : {
+          "type" : "integer",
+          "format" : "int64"
+        },
+        "shared" : {
+          "type" : "boolean"
+        }
+      }
+    },
+    "RecentNotebook" : {
+      "type" : "object",
+      "properties" : {
+        "id" : {
+          "type" : "integer",
+          "format" : "int64"
+        },
+        "name" : {
+          "type" : "string"
+        },
+        "projectId" : {
+          "type" : "integer",
+          "format" : "int64"
+        },
+        "projectName" : {
+          "type" : "string"
+        },
+        "workspaceId" : {
+          "type" : "integer",
+          "format" : "int64"
+        },
+        "workspaceName" : {
+          "type" : "string"
+        },
+        "workspaceOwnerId" : {
+          "type" : "integer",
+          "format" : "int64"
+        }
+      }
+    },
+    "Redirect" : {
+      "type" : "object",
+      "properties" : {
+        "redirect" : {
+          "type" : "string"
+        }
+      }
+    },
+    "StackTraceElement" : {
+      "type" : "object",
+      "properties" : {
+        "methodName" : {
+          "type" : "string"
+        },
+        "fileName" : {
+          "type" : "string"
+        },
+        "lineNumber" : {
+          "type" : "integer",
+          "format" : "int32"
+        },
+        "className" : {
+          "type" : "string"
+        },
+        "nativeMethod" : {
+          "type" : "boolean"
+        }
+      }
+    },
+    "Template" : {
+      "type" : "object",
+      "properties" : {
+        "id" : {
+          "type" : "integer",
+          "format" : "int64"
+        },
+        "name" : {
+          "type" : "string"
+        },
+        "userId" : {
+          "type" : "integer",
+          "format" : "int64"
+        },
+        "createdBy" : {
+          "type" : "integer",
+          "format" : "int64"
+        },
+        "updatedBy" : {
+          "type" : "integer",
+          "format" : "int64"
+        },
+        "comments" : {
+          "type" : "string"
+        },
+        "userName" : {
+          "type" : "string"
+        },
+        "created" : {
+          "type" : "string",
+          "format" : "date-time"
+        },
+        "updated" : {
+          "type" : "string",
+          "format" : "date-time"
+        },
+        "createdByName" : {
+          "type" : "string"
+        },
+        "updatedByName" : {
+          "type" : "string"
+        },
+        "notebookId" : {
+          "type" : "integer",
+          "format" : "int64"
+        },
+        "data" : {
+          "type" : "string"
+        },
+        "type" : {
+          "type" : "string"
+        },
+        "tags" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/MLLabObject"
+          }
+        },
+        "liked" : {
+          "type" : "boolean"
+        },
+        "likedCount" : {
+          "type" : "integer",
+          "format" : "int64"
+        },
+        "usedCount" : {
+          "type" : "integer",
+          "format" : "int64"
+        },
+        "viewedCount" : {
+          "type" : "integer",
+          "format" : "int64"
+        },
+        "shared" : {
+          "type" : "string"
+        },
+        "personal" : {
+          "type" : "boolean"
+        },
+        "example" : {
+          "type" : "boolean"
+        }
+      }
+    },
+    "TemplateLikeResponse" : {
+      "type" : "object",
+      "properties" : {
+        "likedCounter" : {
+          "type" : "integer",
+          "format" : "int64"
+        },
+        "isLiked" : {
+          "type" : "boolean"
+        }
+      }
+    },
+    "TemplateRequest" : {
+      "type" : "object",
+      "properties" : {
+        "connectionGroupId" : {
+          "type" : "integer",
+          "format" : "int64"
+        },
+        "projectId" : {
+          "type" : "integer",
+          "format" : "int64"
+        },
+        "userId" : {
+          "type" : "integer",
+          "format" : "int64"
+        },
+        "name" : {
+          "type" : "string"
+        },
+        "comment" : {
+          "type" : "string"
+        },
+        "type" : {
+          "type" : "string"
+        }
+      }
+    },
+    "Throwable" : {
+      "type" : "object",
+      "properties" : {
+        "cause" : {
+          "$ref" : "#/definitions/Throwable"
+        },
+        "stackTrace" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/StackTraceElement"
+          }
+        },
+        "localizedMessage" : {
+          "type" : "string"
+        },
+        "message" : {
+          "type" : "string"
+        },
+        "suppressed" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/Throwable"
+          }
+        }
+      }
+    },
+    "TimeZone" : {
+      "type" : "object",
+      "properties" : {
+        "name" : {
+          "type" : "string"
+        },
+        "value" : {
+          "type" : "string"
+        }
+      }
+    },
+    "UpdatePasswordRequest" : {
+      "type" : "object",
+      "properties" : {
+        "database" : {
+          "type" : "string"
+        },
+        "userId" : {
+          "type" : "string"
+        },
+        "oldPassword" : {
+          "type" : "string"
+        },
+        "newPassword" : {
+          "type" : "string"
+        }
+      }
+    },
+    "User" : {
+      "type" : "object",
+      "properties" : {
+        "id" : {
+          "type" : "integer",
+          "format" : "int64"
+        },
+        "name" : {
+          "type" : "string"
+        },
+        "userId" : {
+          "type" : "integer",
+          "format" : "int64"
+        },
+        "createdBy" : {
+          "type" : "integer",
+          "format" : "int64"
+        },
+        "updatedBy" : {
+          "type" : "integer",
+          "format" : "int64"
+        },
+        "comments" : {
+          "type" : "string"
+        },
+        "userName" : {
+          "type" : "string"
+        },
+        "created" : {
+          "type" : "string",
+          "format" : "date-time"
+        },
+        "updated" : {
+          "type" : "string",
+          "format" : "date-time"
+        },
+        "createdByName" : {
+          "type" : "string"
+        },
+        "updatedByName" : {
+          "type" : "string"
+        },
+        "firstName" : {
+          "type" : "string"
+        },
+        "lastName" : {
+          "type" : "string"
+        },
+        "email" : {
+          "type" : "string"
+        },
+        "roles" : {
+          "type" : "array",
+          "items" : {
+            "type" : "string"
+          }
+        },
+        "privileges" : {
+          "type" : "array",
+          "items" : {
+            "type" : "string"
+          }
+        },
+        "timezoneValue" : {
+          "type" : "string"
+        },
+        "administrator" : {
+          "type" : "boolean"
+        },
+        "systemAdministrator" : {
+          "type" : "boolean"
+        }
+      }
+    },
+    "UserPermission" : {
+      "type" : "object",
+      "properties" : {
+        "workspaceId" : {
+          "type" : "integer",
+          "format" : "int64"
+        },
+        "owners" : {
+          "type" : "array",
+          "items" : {
+            "type" : "string"
+          }
+        },
+        "readers" : {
+          "type" : "array",
+          "items" : {
+            "type" : "string"
+          }
+        },
+        "writers" : {
+          "type" : "array",
+          "items" : {
+            "type" : "string"
+          }
+        }
+      }
+    },
+    "Version" : {
+      "type" : "object",
+      "properties" : {
+        "id" : {
+          "type" : "integer",
+          "format" : "int64"
+        },
+        "name" : {
+          "type" : "string"
+        },
+        "userId" : {
+          "type" : "integer",
+          "format" : "int64"
+        },
+        "createdBy" : {
+          "type" : "integer",
+          "format" : "int64"
+        },
+        "updatedBy" : {
+          "type" : "integer",
+          "format" : "int64"
+        },
+        "comments" : {
+          "type" : "string"
+        },
+        "userName" : {
+          "type" : "string"
+        },
+        "created" : {
+          "type" : "string",
+          "format" : "date-time"
+        },
+        "updated" : {
+          "type" : "string",
+          "format" : "date-time"
+        },
+        "createdByName" : {
+          "type" : "string"
+        },
+        "updatedByName" : {
+          "type" : "string"
+        },
+        "projectId" : {
+          "type" : "integer",
+          "format" : "int64"
+        },
+        "notebookId" : {
+          "type" : "integer",
+          "format" : "int64"
+        },
+        "data" : {
+          "type" : "string"
+        }
+      }
+    },
+    "Workspace" : {
+      "type" : "object"
+    },
+    "ZeppelinNotStartedException" : {
+      "type" : "object",
+      "properties" : {
+        "cause" : {
+          "$ref" : "#/definitions/Throwable"
+        },
+        "stackTrace" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/StackTraceElement"
+          }
+        },
+        "localizedMessage" : {
+          "type" : "string"
+        },
+        "message" : {
+          "type" : "string"
+        },
+        "suppressed" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/Throwable"
+          }
+        }
+      }
+    }
+  }
+}

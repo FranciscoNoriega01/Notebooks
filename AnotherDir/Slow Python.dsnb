@@ -1,0 +1,95 @@
+[
+  {
+    "name" : "Slow Python",
+    "description" : null,
+    "tags" : null,
+    "version" : "7",
+    "layout" : "zeppelin",
+    "type" : "low",
+    "snapshot" : false,
+    "isEditable" : true,
+    "isRunnable" : true,
+    "template" : "dsrgmn3y",
+    "templateConfig" : "{\"visualization\":{\"filters\":[{\"_id\":1583324064459,\"type\":\"styling\",\"enabled\":true,\"conditions\":{\"operator\":\"and\",\"conditions\":[{\"property\":\"hiddenConnection\",\"operator\":\"*\",\"value\":\"\"}]},\"component\":\"edge\",\"target\":\"edge\",\"properties\":{\"colors\":[\"rgba(0, 0, 0, 0.1)\"],\"style\":[\"dashed\"],\"legendTitle\":[\"Hidden Connection\"]}},{\"_id\":1590499315755,\"type\":\"aggregation\",\"enabled\":true,\"conditions\":{\"operator\":\"and\",\"conditions\":[]},\"component\":\"vertex\",\"target\":\"vertex\",\"properties\":{},\"aggregation\":[{\"source\":\"\",\"type\":\"average\"}]}],\"version\":4}}",
+    "paragraphs" : [
+      {
+        "row" : 0,
+        "col" : 0,
+        "sizeX" : 0,
+        "width" : 0,
+        "title" : null,
+        "hasTitle" : false,
+        "message" : [
+          "%python\r",
+          "\r",
+          "import time\r",
+          "from datetime import datetime, timedelta\r",
+          "\r",
+          "# Set the number of minutes to run\r",
+          "run_minutes = 70  # desired duration\r",
+          "end_time = datetime.now() + timedelta(minutes=run_minutes)  # Calculate end time\r",
+          "\r",
+          "# Loop until the specified time\r",
+          "while datetime.now() < end_time:\r",
+          "    # Print the current time\r",
+          "    print(\"Current time:\", datetime.now())\r",
+          "    \r",
+          "    # 1 second pause to make the output readable\r",
+          "    time.sleep(1)\r"
+        ],
+        "selectedVisualization" : "raw",
+        "visualizationConfig" : null,
+        "hideCode" : false,
+        "hideResult" : false,
+        "hideGutter" : true,
+        "hideVizConfig" : false,
+        "hideInIFrame" : false,
+        "enabled" : true,
+        "forms" : "[]",
+        "result" : {
+          "startTime" : 1730660025751,
+          "endTime" : 1730664231209,
+          "interpreter" : "python.low",
+          "taskStatus" : null,
+          "status" : null,
+          "results" : null,
+          "forms" : null
+        },
+        "relations" : [ ],
+        "dynamicFormParams" : "{}"
+      },
+      {
+        "row" : 0,
+        "col" : 0,
+        "sizeX" : 0,
+        "width" : 0,
+        "title" : null,
+        "hasTitle" : false,
+        "message" : [
+          "%md\r",
+          "Helllo\r"
+        ],
+        "selectedVisualization" : "raw",
+        "visualizationConfig" : null,
+        "hideCode" : false,
+        "hideResult" : false,
+        "hideGutter" : true,
+        "hideVizConfig" : false,
+        "hideInIFrame" : false,
+        "enabled" : true,
+        "forms" : "[]",
+        "result" : {
+          "startTime" : 1730664232627,
+          "endTime" : 1730664233159,
+          "interpreter" : "md.low",
+          "taskStatus" : null,
+          "status" : null,
+          "results" : null,
+          "forms" : null
+        },
+        "relations" : [ ],
+        "dynamicFormParams" : "{}"
+      }
+    ]
+  }
+]
