@@ -20,7 +20,7 @@
         "title" : null,
         "hasTitle" : false,
         "message" : [
-          "%sql select 456 from dual"
+          "%sql select 123 from dual"
         ],
         "selectedVisualization" : "table",
         "visualizationConfig" : null,
