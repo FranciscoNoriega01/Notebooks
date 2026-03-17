@@ -1,0 +1,128 @@
+[
+  {
+    "name" : "list_users_1_1",
+    "description" : null,
+    "tags" : null,
+    "version" : "7",
+    "layout" : "zeppelin",
+    "type" : "low",
+    "snapshot" : false,
+    "isEditable" : true,
+    "isRunnable" : true,
+    "template" : null,
+    "templateConfig" : null,
+    "paragraphs" : [
+      {
+        "row" : 0,
+        "col" : 0,
+        "sizeX" : 0,
+        "width" : 0,
+        "title" : null,
+        "hasTitle" : false,
+        "message" : [
+          "%sql",
+          "select created from all_users;"
+        ],
+        "selectedVisualization" : "table",
+        "visualizationConfig" : null,
+        "hideCode" : false,
+        "hideResult" : false,
+        "hideGutter" : true,
+        "hideVizConfig" : false,
+        "hideInIFrame" : false,
+        "enabled" : true,
+        "forms" : "[]",
+        "result" : {
+          "startTime" : 1773764123036,
+          "endTime" : 1773764124744,
+          "interpreter" : "sql.low",
+          "taskStatus" : "SUCCESS",
+          "status" : "SUCCESS",
+          "results" : [
+            {
+              "message" : "CREATED\n2024-10-15 21:30:20\n2024-10-15 21:30:20\n2024-10-15 21:30:20\n2024-10-15 21:30:20\n2024-10-15 21:30:20\n2024-10-15 21:30:20\n2024-10-15 21:30:20\n2024-10-15 21:30:22\n2024-10-15 21:45:54\n2024-10-15 21:45:23\n2024-10-15 21:45:23\n2024-10-15 21:45:26\n2024-10-15 21:45:45\n2024-10-15 21:45:55\n2024-10-15 21:46:34\n2024-10-15 21:50:52\n2024-10-15 21:52:45\n2024-10-15 21:52:46\n2024-10-15 21:52:50\n2024-10-15 21:52:54\n2024-10-15 21:54:07\n2024-10-15 21:57:50\n2024-10-16 00:01:32\n2024-10-16 00:01:43\n2024-10-16 00:09:28\n2024-10-16 00:11:03\n2024-10-16 00:18:11\n2024-10-16 00:15:19\n2024-10-16 00:15:22\n2024-10-16 00:15:23\n2024-10-16 00:15:28\n2024-10-16 00:15:53\n2024-10-16 00:16:42\n2024-10-16 00:16:42\n2024-10-16 00:18:11\n2024-10-16 00:18:41\n2024-10-16 00:18:41\n2024-10-16 00:26:13\n2024-10-16 00:27:18\n2024-10-16 00:27:18\n2024-10-16 00:28:15\n2024-10-16 00:31:30\n2024-10-16 00:33:12\n2024-10-16 00:33:12\n2024-11-14 06:46:41\n2024-11-14 06:46:42\n2024-11-14 07:37:32\n2024-11-14 07:38:57\n2024-11-14 07:40:12\n2024-11-14 07:59:19\n2025-03-11 03:59:44\n2026-03-14 07:04:22\n",
+              "type" : "TABLE"
+            }
+          ],
+          "forms" : "[]"
+        },
+        "relations" : [ ],
+        "dynamicFormParams" : "{}"
+      },
+      {
+        "row" : 0,
+        "col" : 0,
+        "sizeX" : 0,
+        "width" : 0,
+        "title" : null,
+        "hasTitle" : false,
+        "message" : [
+          "%python",
+          "print(\"push test\")"
+        ],
+        "selectedVisualization" : "raw",
+        "visualizationConfig" : null,
+        "hideCode" : false,
+        "hideResult" : false,
+        "hideGutter" : true,
+        "hideVizConfig" : false,
+        "hideInIFrame" : false,
+        "enabled" : true,
+        "forms" : "[]",
+        "result" : {
+          "startTime" : 1773764125176,
+          "endTime" : 1773764128052,
+          "interpreter" : "python.low",
+          "taskStatus" : "SUCCESS",
+          "status" : "SUCCESS",
+          "results" : [
+            {
+              "message" : "push test\n",
+              "type" : "TEXT"
+            }
+          ],
+          "forms" : "[]"
+        },
+        "relations" : [ ],
+        "dynamicFormParams" : "{}"
+      },
+      {
+        "row" : 0,
+        "col" : 0,
+        "sizeX" : 0,
+        "width" : 0,
+        "title" : null,
+        "hasTitle" : false,
+        "message" : [
+          "%python",
+          "print(\"Hello testing pull change. This change was made in github in main branch\")"
+        ],
+        "selectedVisualization" : "raw",
+        "visualizationConfig" : null,
+        "hideCode" : false,
+        "hideResult" : false,
+        "hideGutter" : true,
+        "hideVizConfig" : false,
+        "hideInIFrame" : false,
+        "enabled" : true,
+        "forms" : "[]",
+        "result" : {
+          "startTime" : 1773764128472,
+          "endTime" : 1773764128863,
+          "interpreter" : "python.low",
+          "taskStatus" : "SUCCESS",
+          "status" : "SUCCESS",
+          "results" : [
+            {
+              "message" : "Hello testing pull change. This change was made in github in main branch\n",
+              "type" : "TEXT"
+            }
+          ],
+          "forms" : "[]"
+        },
+        "relations" : [ ],
+        "dynamicFormParams" : "{}"
+      }
+    ]
+  }
+]
